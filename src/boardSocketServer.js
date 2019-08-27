@@ -18,13 +18,14 @@ io.on('connection', socket => {
     socket.on('login', data => {
         socket.boardId = data.board.id
         socket.userEmail = data.user.email
+        console.log('user login:', data.user.email)
         clients.push(socket)
     })
 
-    // When someone add list
-    socket.on('post-new-list', data => {
-        // data should be list object
-        // First, find users who is in same board and is not a sender.
+    // when someone delete card
+    socket.on('delete-card', data => {
+        // data will be a card object
+        // First, find users who is in same board and is not a sender. 
         const targets = clients.filter(client => {
             if (client.boardId === socket.boardId && client.userEmail !== socket.userEmail) {
                 return true;
@@ -32,6 +33,60 @@ io.on('connection', socket => {
                 return false;
             }
         })
+        // Then, send data to the targets with function named 'delete-list'
+        targets.map(target => {
+            target.emit('delete-card', data)
+        })
+    })
+
+    //When someone post new card 
+    socket.on('post-card', data => {
+        // data is maybe card object
+        // First, find users who is in same board and is not a sender. 
+        const targets = clients.filter(client => {
+            if (client.boardId === socket.boardId && client.userEmail !== socket.userEmail) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        // Then, send data to the targets with function named 'delete-list'
+        targets.map(target => {
+            target.emit('post-card', data)
+        })
+    })
+
+    //When someone delete list
+    socket.on('delete-list', data => {
+        // data should be list id
+        // First, find users who is in same board and is not a sender. 
+        const targets = clients.filter(client => {
+            if (client.boardId === socket.boardId && client.userEmail !== socket.userEmail) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        // Then, send data to the targets with function named 'delete-list'
+        targets.map(target => {
+            target.emit('delete-list', data)
+        })
+    })
+
+    // When someone add list
+    socket.on('post-new-list', data => {
+        // data should be list object
+        // First, find users who is in same board and is not a sender.
+
+        const targets = clients.filter(client => {
+            if (client.boardId === socket.boardId && client.userEmail !== socket.userEmail) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+
+
 
         // Then, send data to the targets with function named 'post-new-list'
         targets.map(target => {
