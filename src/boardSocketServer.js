@@ -95,7 +95,7 @@ io.on('connection', socket => {
     })
 
     socket.on('disconnect', () => {
-        console.log('user disconnected')
+        console.log('user disconnected', socket.boardId, socket.userEmail)
         clients = clients.filter(client => {
             if (client.boardId === socket.boardId && client.userEmail === socket.userEmail) {
                 return false;
