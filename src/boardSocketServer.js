@@ -1,14 +1,20 @@
 import express from 'express';
 import http from 'http';
 import socketIO from 'socket.io';
-
+import fs from 'fs';
+const credentials = {
+    key: fs.readFileSync(__dirname + '/privkey.pem'),
+    cert: fs.readFileSync(__dirname + '/cert.pem'),
+    ca: fs.readFileSync(__dirname + 'chain.pem')
+}
 const port = 8081
 
 const app = express()
 
 const server = http.createServer(app);
+const httpServer = require('https').createServer(credentials, app);
 
-const io = socketIO(server)
+const io = socketIO(httpServer)
 
 let clients = []
 
@@ -108,4 +114,4 @@ io.on('connection', socket => {
 })
 
 
-server.listen(port, () => console.log(`Listening on port ${port}`))
+httpServer.listen(port, () => console.log(`Listening on port ${port}`))
