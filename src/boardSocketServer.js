@@ -5,7 +5,7 @@ import fs from 'fs';
 const credentials = {
     key: fs.readFileSync(__dirname + '/privkey.pem'),
     cert: fs.readFileSync(__dirname + '/cert.pem'),
-    ca: fs.readFileSync(__dirname + 'chain.pem')
+    ca: fs.readFileSync(__dirname + '/chain.pem')
 }
 const port = 8081
 

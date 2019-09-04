@@ -21,7 +21,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var credentials = {
     key: _fs2.default.readFileSync(__dirname + '/privkey.pem'),
     cert: _fs2.default.readFileSync(__dirname + '/cert.pem'),
-    ca: _fs2.default.readFileSync(__dirname + 'chain.pem')
+    ca: _fs2.default.readFileSync(__dirname + '/chain.pem')
 };
 var port = 8081;
 
