@@ -27,10 +27,14 @@ var port = 8081;
 
 var app = (0, _express2.default)();
 
-var server = _http2.default.createServer(app);
-var httpServer = require('https').createServer(credentials, app);
+var env = process.env.NODE_ENV || 'dev';
 
-var io = (0, _socket2.default)(httpServer);
+var server = _http2.default.createServer(app);
+if (env === 'production') {
+    server = require('https').createServer(credentials, app);
+}
+
+var io = (0, _socket2.default)(server);
 
 var clients = [];
 
@@ -126,6 +130,6 @@ io.on('connection', function (socket) {
     });
 });
 
-httpServer.listen(port, function () {
+server.listen(port, function () {
     return console.log('Listening on port ' + port);
 });

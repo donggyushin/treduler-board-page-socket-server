@@ -11,10 +11,14 @@ const port = 8081
 
 const app = express()
 
-const server = http.createServer(app);
-const httpServer = require('https').createServer(credentials, app);
+const env = process.env.NODE_ENV || 'dev';
 
-const io = socketIO(httpServer)
+let server = http.createServer(app);
+if (env === 'production') {
+    server = require('https').createServer(credentials, app);
+}
+
+const io = socketIO(server)
 
 let clients = []
 
@@ -114,4 +118,4 @@ io.on('connection', socket => {
 })
 
 
-httpServer.listen(port, () => console.log(`Listening on port ${port}`))
+server.listen(port, () => console.log(`Listening on port ${port}`))

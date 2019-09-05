@@ -14,7 +14,7 @@
     "socket.io": "^2.2.0"
   },
   "scripts": {
-    "start": "node dist/boardSocketServer.js &",
+    "start": "NODE_ENV=production node dist/boardSocketServer.js &",
     "build": "babel --presets es2015 -d dist/ src",
     "dev": "nodemon --exec babel-node src/boardSocketServer.js"
   }
